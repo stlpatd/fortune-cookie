@@ -15,11 +15,37 @@
 # limitations under the License.
 #
 import webapp2
+import random
+
+
+def getRandomFortune():
+    #make list of possible fortunes
+    fortunes = [
+        "I see much code in your future",
+        "Consider eating more fortune cookies",
+        "You have tamed the mighty Python, now you must free it onto the Great Spider's Web!"
+    ]
+    #randomly select one of the fortunes
+    index = random.randint(0,2)
+    return fortunes[index]
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!!!!')
-
-app = webapp2.WSGIApplication([
+        header = "<h1>Fortune Cookie</h1>"
+        
+        fortune ="<strong>" + getRandomFortune() + "</strong>"
+        fortune_sentence = "Your fortune: " +  fortune
+        fortune_paragraph = "<p>" + fortune_sentence + "</p>"
+        luckyNumber = "<strong>" + str(random.randint(1,100)) + "</strong"
+        numberSentence = 'Your lucky number: ' + luckyNumber
+        numberParagraph = "<p>" + numberSentence + "</p>" + "<br>"
+        
+        cookie_again_button = "<a href='.'><button>Another cookie plz!</button></a>"
+        content = header + fortune_paragraph + numberParagraph + cookie_again_button
+        self.response.write(content)
+        
+routes = [
     ('/', MainHandler)
-], debug=True)
+]
+    
+app = webapp2.WSGIApplication(routes, debug=True)
